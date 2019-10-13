@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>angularJS测试</title>
+    <script src="js/angular.min.js"></script>
+    <script type="text/javascript">
+        //定义模块
+        //参数1：模块名称（ng-app一致），
+        // 参数2：要加载的其它模块，如果不写说明是加载模块；如果是没有其它模块要加载的话需要写空数组;
+        // 如果有模块需要加载则在数组中指定名称
+        var app = angular.module("app", []);
+        
+        //定义处理器
+        //参数1：处理器名称与ng-controller一致
+        //参数2：处理器的方法体，$scope方式该模块的上下文对象
+        //$http 内置服务对象，可以发送http的各种请求
+        app.controller("myController", function ($scope, $http) {
+
+            //定义方法
+            $scope.findPersons = function () {
+                //获取数据
+                $http.get("data.json").success(function (response) {
+                    //成功以后执行
+                    $scope.persons = response;
+                }).error(function () {
+                    //失败之后执行
+                    alert("加载数据失败！");
+                });
+            };
+        });
+
+    </script>
+</head>
+<body ng-app="app" ng-controller="myController" ng-init="findPersons()">
+
+<table>
+    <tr>
+        <td>id</td>
+        <td>姓名</td>
+        <td>性别</td>
+    </tr>
+    <tr ng-repeat="p in persons">
+        <td>{{p.id}}</td>
+        <td>{{p.name}}</td>
+        <td>{{p.gender}}</td>
+    </tr>
+</table>
+</body>
+</html>
